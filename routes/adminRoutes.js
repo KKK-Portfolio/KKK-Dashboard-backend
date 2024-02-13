@@ -19,14 +19,14 @@ router.get("/admin", (req, res) => {
 //POST
 //Admin Check-login
 
-router.post("/admin", async (req, res) => {
+router.post("/api/v1/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(402).json({ message: "Invalid credentials" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -38,7 +38,7 @@ router.post("/admin", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, jwtsecret);
     res.cookie("token", token, { httpOnly: true });
 
-    res.redirect("/dashboard");
+    res.status(200).json({ status: 200, message: "success", token });
   } catch (error) {
     console.log(error);
   }
