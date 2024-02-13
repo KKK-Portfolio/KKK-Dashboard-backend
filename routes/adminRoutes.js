@@ -12,7 +12,7 @@ const jwtsecret = process.env.JWT_SECRET;
 
 //GET
 //Admin LOGIN_PAGE
-router.get("/admin", (req, res) => {
+router.get("/api/v1/login", (req, res) => {
   res.send("This is admin login page");
 });
 
