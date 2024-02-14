@@ -9,6 +9,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 const jwtsecret = process.env.JWT_SECRET;
+router.use(express.json());
 
 //GET
 //Admin LOGIN_PAGE
@@ -41,13 +42,14 @@ router.post("/api/v1/login", async (req, res) => {
     res.status(200).json({ status: 200, message: "success", token });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
 //POST
 //Admin Register
 
-router.post("/register", async (req, res) => {
+router.post("/api/v1/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
