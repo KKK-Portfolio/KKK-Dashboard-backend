@@ -17,6 +17,12 @@ Db();
 //passing the data using middleware
 app.use(express.urlencoded({ extended: true }));
 
+// Set up CORS middleware to allow requests from any origin
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.use("/", require("./routes/userRoutes"));
 app.use("/", require("./routes/adminRoutes"));
 app.listen(PORT, () => {

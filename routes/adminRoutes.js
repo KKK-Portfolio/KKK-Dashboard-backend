@@ -22,6 +22,7 @@ router.get("/api/v1/login", (req, res) => {
 
 router.post("/api/v1/login", async (req, res) => {
   try {
+    res.header("Access-Control-Allow-Origin", "*");
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
