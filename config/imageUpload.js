@@ -5,7 +5,7 @@ const Image = require("../model/imageModel");
 // Set up storage for uploaded images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dest = "public/img"; // Destination directory
+    const dest = `public/img`; // Destination directory
     console.log("Destination path:", dest); // Log destination path
     cb(null, dest);
   },
