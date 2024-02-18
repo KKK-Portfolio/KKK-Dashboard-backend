@@ -6,6 +6,7 @@ const session = require("express-session");
 //User Define Module
 
 const Db = require("./config/dbConfig");
+const imageuploadRoutes = require("./routes/imageuploadRoutes");
 
 const app = express();
 
@@ -16,6 +17,9 @@ Db();
 
 //passing the data using middleware
 app.use(express.urlencoded({ extended: true }));
+
+// Mount image routes
+app.use("/images", imageuploadRoutes);
 
 app.use("/", require("./routes/userRoutes"));
 app.use("/", require("./routes/adminRoutes"));
