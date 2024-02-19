@@ -6,7 +6,7 @@ const session = require("express-session");
 //User Define Module
 
 const Db = require("./config/dbConfig");
-const imageuploadRoutes = require("./routes/imageuploadRoutes");
+const imageRoutes = require("./routes/imageRoutes");
 
 const app = express();
 
@@ -19,9 +19,7 @@ Db();
 app.use(express.urlencoded({ extended: true }));
 
 // Mount image routes
-app.use("/images", imageuploadRoutes, express.static("public/img"));
-// Serve static files from the 'public/img' directory
-// app.use('/images', express.static('public/img'));
+app.use("/images", imageRoutes, express.static("public/img"));
 
 app.use("/", require("./routes/userRoutes"));
 app.use("/", require("./routes/adminRoutes"));
