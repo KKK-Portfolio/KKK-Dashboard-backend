@@ -31,7 +31,6 @@ async function imageUpload(req, res, next) {
     try {
       // Create a new Image document with the uploaded file information
       const newImage = new Image({
-        filename: req.file.filename,
         path: req.file.path,
       });
       // Save the new Image document to the database
