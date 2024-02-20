@@ -1,4 +1,4 @@
-// imageController.js
+// Core Module
 const Image = require("../model/imageModel");
 const path = require("path");
 const fs = require("fs");

@@ -1,7 +1,9 @@
-// imageRoutes.js
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+
+//User Define Module
+const { imageLimit } = require("../middleware/imageLimit");
 const imageController = require("../config/imageController");
 
 // Set up storage for uploaded images
@@ -21,6 +23,7 @@ const upload = multer({ storage: storage });
 router.post(
   "/api/v1/upload",
   upload.single("image"),
+  imageLimit,
   imageController.createImage
 );
 router.get("/api/v1/allimages", imageController.getAllImages);
