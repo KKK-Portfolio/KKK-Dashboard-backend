@@ -1,4 +1,5 @@
 // imageMiddleware.js
+const fs = require("fs");
 const Image = require("../model/imageModel");
 
 // Middleware to limit the maximum number of images
@@ -6,9 +7,8 @@ const imageLimit = async (req, res, next) => {
   try {
     // Get the current number of images in the database
     const imageCount = await Image.countDocuments();
-
     // Set the maximum limit for images (e.g., 10)
-    const maxLimit = 10;
+    const maxLimit = 2;
 
     // Check if the current number of images exceeds the maximum limit
     if (imageCount >= maxLimit) {

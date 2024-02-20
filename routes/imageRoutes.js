@@ -22,8 +22,8 @@ const upload = multer({ storage: storage });
 // Routes
 router.post(
   "/api/v1/upload",
-  upload.single("image"),
   imageLimit,
+  upload.single("image"),
   imageController.createImage
 );
 router.get("/api/v1/allimages", imageController.getAllImages);
