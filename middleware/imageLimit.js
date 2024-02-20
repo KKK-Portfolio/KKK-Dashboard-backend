@@ -8,7 +8,7 @@ const imageLimit = async (req, res, next) => {
     // Get the current number of images in the database
     const imageCount = await Image.countDocuments();
     // Set the maximum limit for images (e.g., 10)
-    const maxLimit = 2;
+    const maxLimit = 5;
 
     // Check if the current number of images exceeds the maximum limit
     if (imageCount >= maxLimit) {
