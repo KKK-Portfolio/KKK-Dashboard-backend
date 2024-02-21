@@ -1,9 +1,6 @@
-//Check login Middleware
-//Core Module
-
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-//User Define Module
 const jwtsecret = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {

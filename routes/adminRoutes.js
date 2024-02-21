@@ -73,15 +73,15 @@ router.post("/api/v1/register", async (req, res) => {
   }
 });
 
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", authMiddleware, (req, res) => {
   res.send("This is Dashboard...");
 });
 
-router.get("/add-post", (req, res) => {
+router.get("/add-post", authMiddleware, (req, res) => {
   res.send("This is add-post...");
 });
 
-router.get("/update-post", (req, res) => {
+router.get("/update-post", authMiddleware, (req, res) => {
   res.send("This is update-post...");
 });
 
