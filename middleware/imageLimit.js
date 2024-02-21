@@ -1,5 +1,4 @@
 // imageMiddleware.js
-const fs = require("fs");
 const Image = require("../model/imageModel");
 
 // Middleware to limit the maximum number of images
