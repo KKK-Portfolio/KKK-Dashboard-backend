@@ -23,6 +23,7 @@ const upload = multer({ storage: storage });
 // Routes
 router.post(
   "/api/v1/upload",
+  authMiddleware,
   imageLimit,
   upload.single("image"),
   imageController.createImage
