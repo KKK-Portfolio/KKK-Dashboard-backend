@@ -23,19 +23,17 @@ const upload = multer({ storage: storage });
 // Routes
 router.post(
   "/api/v1/upload",
-  authMiddleware,
   imageLimit,
   upload.single("image"),
   imageController.createImage
 );
-router.get("/api/v1/allimages", authMiddleware, imageController.getAllImages);
+router.get("/api/v1/allimages", imageController.getAllImages);
 router.get("/api/v1/:id", authMiddleware, imageController.getImageById);
 router.put(
   "/api/v1/:id",
-  authMiddleware,
   upload.single("image"),
   imageController.updateImageById
 );
-router.delete("/api/v1/:id", authMiddleware, imageController.deleteImageById);
+router.delete("/api/v1/:id", imageController.deleteImageById);
 
 module.exports = router;
