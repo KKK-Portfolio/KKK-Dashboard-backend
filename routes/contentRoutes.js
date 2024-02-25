@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.post(
   "/upload",
-  checkUploadConditions,
   imageContent.array("images", 3),
+  checkUploadConditions,
   uploadImage
 );
 
