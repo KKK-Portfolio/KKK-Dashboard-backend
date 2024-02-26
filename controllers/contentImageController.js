@@ -23,7 +23,7 @@ exports.uploadImage = async (req, res) => {
     // Process uploaded files and extract relevant information
     const imagesData = req.files.map((file) => ({
       filename: file.filename,
-      path: path.join("public/contents", file.filename),
+      filepath: path.join("public/contents", file.filename), // Change 'path' to 'filepath'
     }));
 
     // Save image content to database
@@ -139,7 +139,7 @@ exports.updateAllImages = async (req, res) => {
     // Delete old images from server
     if (imageContent.images) {
       imageContent.images.forEach((image) => {
-        const imagePath = path.join(__dirname, "..", image.path);
+        const imagePath = path.join(__dirname, "..", image.filepath); // Change 'path' to 'filepath'
         fs.unlinkSync(imagePath);
       });
     }
@@ -161,22 +161,14 @@ exports.updateAllImages = async (req, res) => {
 
 exports.updateIndividualImage = async (req, res) => {
   const { id, imageId } = req.params;
-  const { newImage } = req.body;
 
   try {
     // Find the image content by ID
     const imageContent = await ImageContent.findById(id);
-    console.log(imageContent);
 
+    // Check if the image content exists
     if (!imageContent) {
       return res.status(404).json({ error: "Image content not found" });
-    }
-
-    // Check if the images array exists
-    if (!imageContent.images || !Array.isArray(imageContent.images)) {
-      return res
-        .status(500)
-        .json({ error: "Image array not found or invalid" });
     }
 
     // Find the index of the image to update
@@ -184,31 +176,55 @@ exports.updateIndividualImage = async (req, res) => {
       (image) => image._id.toString() === imageId
     );
 
+    // Check if the image exists in the array
     if (imageIndex === -1) {
       return res.status(404).json({ error: "Image not found" });
     }
 
-    // Delete old image from server
-    const oldImagePath = path.join(
-      __dirname,
-      "..",
-      imageContent.images[imageIndex].path
-    );
-    fs.unlinkSync(oldImagePath);
+    // Extract filename and path from the request body
+    const { filename, filepath } = imageContent.images[imageIndex]; // Change 'path' to 'filepath'
+
+    // Check if filename and filepath are provided
+    if (!filename || !filepath) {
+      // Change 'path' to 'filepath'
+      return res
+        .status(400)
+        .json({ error: "Filename and filepath are required" }); // Change 'path' to 'filepath'
+    }
+
+    // Remove the old image file from the server if path exists
+    if (imageContent.images[imageIndex].filepath) {
+      // Change 'path' to 'filepath'
+      const oldImagePath = path.resolve(
+        __dirname,
+        "..",
+        imageContent.images[imageIndex].filepath // Change 'path' to 'filepath'
+      );
+      fs.unlinkSync(oldImagePath);
+    }
+
+    // Update the image data
+    imageContent.images[imageIndex].filename = filename;
+    imageContent.images[imageIndex].filepath = filepath; // Change 'path' to 'filepath'
 
     // Save the updated image content
     const updatedImageContent = await imageContent.save();
 
-    // Update the image in the content
-    imageContent.images[imageIndex] = newImage;
-
-    console.log(updatedImageContent);
-
-    res
-      .status(200)
-      .json({ message: "Image updated successfully", updatedImageContent });
+    res.status(200).json({
+      message: "Image updated successfully",
+      updatedImageContent,
+    });
   } catch (error) {
     console.error("Error updating individual image:", error);
+    if (error.name === "ValidationError") {
+      // Mongoose validation error
+      const validationErrors = Object.values(error.errors).map(
+        (err) => err.message
+      );
+      return res
+        .status(400)
+        .json({ error: "Validation error", details: validationErrors });
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 };
