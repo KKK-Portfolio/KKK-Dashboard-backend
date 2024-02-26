@@ -26,6 +26,7 @@ app.use(
 
 //passing the data using middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use("/", require("./routes/userRoutes"));
 app.use("/", require("./routes/adminRoutes"));
