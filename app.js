@@ -35,8 +35,6 @@ app.use(
 // Mount image routes
 app.use("/images", imageRoutes, express.static("public/img"));
 
-app.use("/", require("./routes/userRoutes"));
-app.use("/", require("./routes/adminRoutes"));
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
