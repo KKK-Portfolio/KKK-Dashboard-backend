@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 //connected to database
 Db();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use("/contents", contentRoutes);
 
 app.listen(PORT, () => {
