@@ -1,13 +1,12 @@
 // Core Module
 const Image = require("../model/imageModel");
-const path = require("path");
 const fs = require("fs");
 
 // Create a new image
 exports.createImage = async (req, res) => {
   try {
-    const { filename, path } = req.file;
-    const newImage = new Image({ filename, path });
+    const { filename, path: filepath } = req.file;
+    const newImage = new Image({ filename, filepath });
     const savedImage = await newImage.save();
     res.status(201).json(savedImage);
   } catch (error) {
@@ -51,13 +50,13 @@ exports.updateImageById = async (req, res) => {
     }
 
     // Delete the old image file from the file system
-    fs.unlinkSync(existingImage.path);
+    fs.unlinkSync(existingImage.filepath);
 
     // Save the new image file to the file system
-    const { filename, path } = req.file;
+    const { filename, path: filepath } = req.file;
     const updatedImage = await Image.findByIdAndUpdate(
       req.params.id,
-      { filename, path },
+      { filename, filepath },
       { new: true }
     );
 
@@ -71,6 +70,7 @@ exports.updateImageById = async (req, res) => {
     res.status(500).json({ message: "Error updating image", error: error });
   }
 };
+
 // Delete an image by ID
 exports.deleteImageById = async (req, res) => {
   try {
@@ -79,7 +79,7 @@ exports.deleteImageById = async (req, res) => {
       return res.status(404).json({ message: "Image not found" });
     }
     // Delete the image file from the server
-    fs.unlinkSync(image.path);
+    fs.unlinkSync(image.filepath);
     res.status(200).json({ message: "Image deleted successfully" });
   } catch (error) {
     console.error("Error deleting image:", error);
