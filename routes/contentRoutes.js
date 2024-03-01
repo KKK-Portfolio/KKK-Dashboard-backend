@@ -17,16 +17,11 @@ router.get("/api/v1/allContents", contents.getAllContents);
 router.get("/api/v1/:id", contents.getcontents);
 router.put("/api/v1/text/:id", contents.updateText);
 router.put(
-  "/api/v1/:id/allImages",
-  imageContent.array("images", 3),
-  contents.updateAllImages
-);
-router.put(
-  "/api/v1/:id/images/:imageId",
-  imageContent.array("images", 3),
+  "/api/v1/images/:id",
+  imageContent.single("images"),
   contents.updateIndividualImage
 );
-router.delete("/api/v1/images/:imageId", contents.deleteIndividualImage);
+router.delete("/api/v1/images/:id", contents.deleteIndividualImage);
 router.delete("/api/v1/:id", contents.deleteContent);
 
 module.exports = router;

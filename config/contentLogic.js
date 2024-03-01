@@ -8,16 +8,13 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
-    );
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
 const imageContent = multer({
   storage: storage,
-  limits: { fileSize: 30 * 1024 * 1024 }, // 5MB max file size
+  limits: { fileSize: 30 * 1024 * 1024 }, // 30MB max file size
 });
 
 module.exports = imageContent;
