@@ -26,6 +26,7 @@ router.put(
   imageContent.array("images", 3),
   contents.updateIndividualImage
 );
+router.delete("/api/v1/images/:imageId", contents.deleteIndividualImage);
 router.delete("/api/v1/:id", contents.deleteContent);
 
 module.exports = router;

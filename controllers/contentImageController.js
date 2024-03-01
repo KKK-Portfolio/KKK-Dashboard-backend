@@ -59,7 +59,7 @@ exports.getAllContents = async (req, res) => {
   try {
     const textContents = await TextContent.find();
     const imageContents = await ImageContent.find().populate("textContentRef");
-    res.status(200).json({ textContents, imageContents });
+    res.status(200).json({ imageContents });
   } catch (error) {
     console.error("Error fetching contents:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -226,6 +226,54 @@ exports.updateIndividualImage = async (req, res) => {
         .json({ error: "Validation error", details: validationErrors });
     }
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Delete image by id
+exports.deleteIndividualImage = async (req, res) => {
+  const { imageId } = req.params; // Assuming you have the imageId in your route params
+  console.log(JSON.stringify(`req.params: ${req.params}`));
+  console.log(`imageId : ${imageId}`);
+
+  try {
+    // Find the ImageContent document containing the image
+    const imageContent = await ImageContent.findOne({ "images._id": imageId });
+    console.log(`imageContent : ${imageContent}`);
+
+    if (!imageContent) {
+      return res.status(404).json({ message: "Image content not found" });
+    }
+
+    // Find the index of the image within the images array
+    const imageIndex = imageContent.images.findIndex(
+      (image) => image._id.toString() === imageId
+    );
+    console.log(`imageIndex : ${imageIndex}`);
+
+    if (imageIndex === -1) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    // Get the filepath of the image to delete
+    const imagePath = path.join(
+      __dirname,
+      "..",
+      imageContent.images[imageIndex].filepath
+    );
+
+    // Delete the image file from the server
+    fs.unlinkSync(imagePath);
+
+    // Remove the image from the images array
+    imageContent.images.splice(imageIndex, 1);
+
+    // Save the updated ImageContent document
+    await imageContent.save();
+
+    res.status(200).json({ message: "Image deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    res.status(500).json({ message: "Error deleting image", error: error });
   }
 };
 
