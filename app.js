@@ -1,7 +1,5 @@
 //Core Module
 const express = require("express");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
 
 //User Define Module
 
@@ -16,9 +14,8 @@ Db();
 
 //passing the data using middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.use("/", require("./routes/userRoutes"));
-app.use("/", require("./routes/adminRoutes"));
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
