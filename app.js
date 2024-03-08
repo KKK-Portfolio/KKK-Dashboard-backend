@@ -26,30 +26,30 @@ app.use(
 );
 
 // Middleware to parse incoming cookies
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // Middleware for session management
-app.use(
-  session({
-    secret: "keyboard cat", // Secret for session encryption
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI, // MongoDB connection URI
-    }),
-    cookie: {
-      maxAge: 3600000, // Cookie expiration time (1 hour)
-      secure: false, // Set to true if HTTPS is used
-      sameSite: "lax", // Set to "strict" or "none" based on your requirements
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: "keyboard cat", // Secret for session encryption
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({
+//       mongoUrl: process.env.MONGODB_URI, // MongoDB connection URI
+//     }),
+//     cookie: {
+//       maxAge: 3600000, // Cookie expiration time (1 hour)
+//       secure: false, // Set to true if HTTPS is used
+//       sameSite: "lax", // Set to "strict" or "none" based on your requirements
+//     },
+//   })
+// );
 
 // Middleware to log parsed cookies
-app.use((req, res, next) => {
-  console.log("Parsed Cookies:", req.cookies);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("Parsed Cookies:", req.cookies);
+//   next();
+// });
 
 // Mount image routes and serve static files
 app.use("/images", imageRoutes, express.static("public/img"));
