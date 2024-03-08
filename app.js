@@ -1,5 +1,6 @@
 //Core Module
 const express = require("express");
+const cors = require("cors");
 
 //User Define Module
 
