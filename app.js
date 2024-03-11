@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.json());
 
-app.use("/logo", require("./routes/logoRoutes"));
+app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
