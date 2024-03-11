@@ -1,5 +1,6 @@
 //Core Module
 const express = require("express");
+const path = require("path");
 
 //User Define Module
 
@@ -16,7 +17,7 @@ Db();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/logo", require("./routes/logoRoutes"));
+app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
