@@ -5,10 +5,10 @@ const path = require("path");
 
 // uploadController.js
 
-exports.uploadImage = async (req, res) => {
+exports.uploadContent = async (req, res) => {
   try {
     // Extract text content fields from request body
-    const { title, description } = req.body;
+    const { title, description, category, favorite } = req.body;
 
     // Check if text content fields are provided
     if (!title || !description) {
@@ -17,13 +17,26 @@ exports.uploadImage = async (req, res) => {
         .send("Title and description are required for text content.");
     }
 
+    // Handle casting for the favorite field
+    let parsedFavorite;
+    if (typeof favorite === "string" && favorite.trim() !== "") {
+      parsedFavorite = favorite === "true"; // Convert the string value to a Boolean
+    } else {
+      parsedFavorite = favorite; // Use the provided value if it's already a valid Boolean or null
+    }
+
     // Save text content to database
-    const savedTextContent = await TextContent.create({ title, description });
+    const savedTextContent = await TextContent.create({
+      title,
+      description,
+      category,
+      favorite: parsedFavorite,
+    });
 
     // Process uploaded files and extract relevant information
     const imagesData = req.files.map((file) => ({
       filename: file.filename,
-      filepath: path.join("public/contents", file.filename), // Change 'path' to 'filepath'
+      filepath: path.join("public/contents", file.filename),
     }));
 
     // Save image content to database
@@ -56,10 +69,72 @@ exports.uploadImage = async (req, res) => {
 //get allContents
 
 exports.getAllContents = async (req, res) => {
+  const { favorite, category, page, limit } = req.query;
+  const query = {};
+
+  if (favorite !== undefined) {
+    query.favorite = favorite;
+  }
+
+  if (category !== undefined) {
+    query.category = category;
+  }
+
+  const pageNumber = parseInt(page) || 1;
+  const itemsPerPage = parseInt(limit) || 10;
+
   try {
-    const textContents = await TextContent.find();
-    const imageContents = await ImageContent.find().populate("textContentRef");
-    res.status(200).json({ imageContents });
+    let textContents, imageContents;
+
+    if (favorite === "true") {
+      // If favorite is set to true, first retrieve favorite documents
+      textContents = await TextContent.find({ favorite: true, ...query })
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage);
+
+      imageContents = await ImageContent.find({ favorite: true, ...query })
+        .populate("textContentRef")
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage);
+
+      // Then, retrieve other documents excluding the favorites
+      const remainingTextContents = await TextContent.find({
+        favorite: { $ne: true },
+        ...query,
+      })
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage - textContents.length);
+
+      const remainingImageContents = await ImageContent.find({
+        favorite: { $ne: true },
+        ...query,
+      })
+        .populate("textContentRef")
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage - imageContents.length);
+
+      textContents = textContents.concat(remainingTextContents);
+      imageContents = imageContents.concat(remainingImageContents);
+    } else {
+      // If favorite is not set to true, retrieve documents without considering favorite status
+      textContents = await TextContent.find(query)
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage);
+
+      imageContents = await ImageContent.find(query)
+        .populate("textContentRef")
+        .skip((pageNumber - 1) * itemsPerPage)
+        .limit(itemsPerPage);
+    }
+
+    // Check if both textContents and imageContents are empty
+    if (textContents.length === 0 && imageContents.length === 0) {
+      // Send 404 Not Found response
+      return res.status(404).json({ error: "No documents found" });
+    }
+
+    // Send the fetched contents
+    res.status(200).json({ textContents, imageContents });
   } catch (error) {
     console.error("Error fetching contents:", error);
     res.status(500).json({ error: "Internal server error" });

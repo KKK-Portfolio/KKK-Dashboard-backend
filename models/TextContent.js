@@ -17,6 +17,15 @@ const textContentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  favorite: {
+    type: Boolean,
+    default: false,
+  },
+  category: {
+    type: String,
+    enum: ["CategoryA", "CategoryB", "CategoryC"], // Predefined categories
+    required: true,
+  },
 });
 
 const TextContent = mongoose.model("TextContent", textContentSchema);

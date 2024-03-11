@@ -11,7 +11,7 @@ router.post(
   "/api/v1/upload",
   imageContent.array("images", 3),
   checkUploadConditions,
-  contents.uploadImage
+  contents.uploadContent
 );
 router.get("/api/v1/allContents", contents.getAllContents);
 router.get("/api/v1/:id", contents.getcontents);
