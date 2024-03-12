@@ -1,5 +1,6 @@
 //Core Module
 const express = require("express");
+const contentRoutes = require("./routes/contentRoutes");
 const cors = require("cors");
 
 //User Define Module
@@ -21,11 +22,9 @@ app.use(
     credentials: true, // Allow cookies to be sent with requests
   })
 );
-
-//passing the data using middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.json());
+app.use("/contents", express.static("public/contents"), contentRoutes);
 
 app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 

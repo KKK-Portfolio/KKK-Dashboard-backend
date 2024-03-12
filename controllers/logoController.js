@@ -1,4 +1,4 @@
-const Logo = require("../model/LogoModel");
+const Logo = require("../models/LogoModel");
 const fs = require("fs");
 
 exports.createLogo = async (req, res) => {
