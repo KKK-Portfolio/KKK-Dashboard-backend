@@ -46,7 +46,10 @@ exports.uploadContent = async (req, res) => {
     };
     const savedImageContent = await ImageContent.create(imageContentData);
 
-    res.status(200).send("Images uploaded successfully.");
+    res.status(200).json({
+      status: 200,
+      message: "success",
+    });
   } catch (error) {
     console.error("Error uploading images:", error);
 
