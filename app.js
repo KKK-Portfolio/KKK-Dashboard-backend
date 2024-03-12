@@ -16,6 +16,8 @@ Db();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use("/", require("./routes/aboutUsRoutes"));
+
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
