@@ -99,25 +99,6 @@ exports.getAllContents = async (req, res) => {
         .populate("textContentRef")
         .skip((pageNumber - 1) * itemsPerPage)
         .limit(itemsPerPage);
-
-      // Then, retrieve other documents excluding the favorites
-      const remainingTextContents = await TextContent.find({
-        favorite: { $ne: true },
-        ...query,
-      })
-        .skip((pageNumber - 1) * itemsPerPage)
-        .limit(itemsPerPage - textContents.length);
-
-      const remainingImageContents = await ImageContent.find({
-        favorite: { $ne: true },
-        ...query,
-      })
-        .populate("textContentRef")
-        .skip((pageNumber - 1) * itemsPerPage)
-        .limit(itemsPerPage - imageContents.length);
-
-      textContents = textContents.concat(remainingTextContents);
-      imageContents = imageContents.concat(remainingImageContents);
     } else {
       // If favorite is not set to true, retrieve documents without considering favorite status
       textContents = await TextContent.find(query)
@@ -146,7 +127,7 @@ exports.getAllContents = async (req, res) => {
 
 //GET
 //Get contents by id
-exports.getcontents = getContentById = async (req, res) => {
+exports.getcontents = async (req, res) => {
   const { id } = req.params;
 
   try {
