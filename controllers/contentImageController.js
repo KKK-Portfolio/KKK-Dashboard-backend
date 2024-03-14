@@ -114,7 +114,9 @@ exports.getAllContents = async (req, res) => {
     // Check if both textContents and imageContents are empty
     if (textContents.length === 0 && imageContents.length === 0) {
       // Send 404 Not Found response
-      return res.status(404).json({ error: "No documents found" });
+      return res
+        .status(404)
+        .json({ status: 404, message: "No documents found" });
     }
 
     // Send the fetched contents
