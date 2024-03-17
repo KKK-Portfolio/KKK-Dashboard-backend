@@ -1,7 +1,5 @@
 //Core Module
 const express = require("express");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const cors = require("cors");
 
 //User Define Module
@@ -28,8 +26,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/", require("./routes/userRoutes"));
-app.use("/", require("./routes/adminRoutes"));
+app.use("/api/v1/users", require("./routes/authRoutes"));
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
