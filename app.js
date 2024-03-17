@@ -29,6 +29,8 @@ app.use("/contents", express.static("public/contents"), contentRoutes);
 app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 app.use("/", require("./routes/aboutUsRoutes"));
 
+app.use("/achievements", require("./routes/achievementRoutes"));
+
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
