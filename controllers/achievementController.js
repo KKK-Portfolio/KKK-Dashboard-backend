@@ -1,4 +1,4 @@
-const Achievement = require("../model/AchievementModel");
+const Achievement = require("../models/AchievementModel");
 
 exports.getFinishedProjects = async (req, res) => {
   try {
