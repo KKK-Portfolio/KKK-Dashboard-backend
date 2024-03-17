@@ -5,6 +5,8 @@ const cors = require("cors");
 
 //User Define Module
 
+const contactUsRoutes = require("./routes/contactUsRoutes");
+
 const Db = require("./config/dbConfig");
 
 const app = express();
@@ -27,6 +29,7 @@ app.use(express.json());
 app.use("/contents", express.static("public/contents"), contentRoutes);
 
 app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
+app.use("/contact-us", require("./routes/contactUsRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
