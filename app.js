@@ -28,6 +28,7 @@ app.use("/contents", express.static("public/contents"), contentRoutes);
 
 app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 app.use("/", require("./routes/aboutUsRoutes"));
+app.use("/api/v1/contact-us", require("./routes/contactUsRoutes"));
 
 app.use("/achievements", require("./routes/achievementRoutes"));
 

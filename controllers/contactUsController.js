@@ -1,5 +1,5 @@
 //Core Module
-const ContactUs = require("../model/contactUsModel");
+const ContactUs = require("../models/contactUsModel");
 
 exports.formSubmit = async (req, res) => {
   try {
