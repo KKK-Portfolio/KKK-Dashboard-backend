@@ -31,6 +31,7 @@ app.use("/", require("./routes/aboutUsRoutes"));
 
 app.use("/achievements", require("./routes/achievementRoutes"));
 
+app.use("/", require("./routes/testimonialRoutes"));
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
