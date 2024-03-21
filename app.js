@@ -6,6 +6,7 @@ const cors = require("cors");
 //User Define Module
 
 const Db = require("./config/dbConfig");
+const bannerRoutes = require("./routes/bannerRoutes");
 
 const app = express();
 
@@ -24,6 +25,9 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Mount image routes
+app.use("/api/v1/banner", bannerRoutes, express.static("public/banner"));
 app.use("/contents", express.static("public/contents"), contentRoutes);
 app.use(
   "/api/v1/testimonial",
