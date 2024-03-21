@@ -17,7 +17,7 @@ Db();
 app.use(express.urlencoded({ extended: true }));
 
 // Mount image routes
-app.use("/api/v1/banner", bannerRoutes, express.static("public/img"));
+app.use("/api/v1/banner", bannerRoutes, express.static("public/banner"));
 
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
