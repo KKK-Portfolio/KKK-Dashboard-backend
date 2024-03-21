@@ -4,7 +4,7 @@ const express = require("express");
 //User Define Module
 
 const Db = require("./config/dbConfig");
-const imageRoutes = require("./routes/imageRoutes");
+const bannerRoutes = require("./routes/bannerRoutes");
 
 const app = express();
 
@@ -17,7 +17,7 @@ Db();
 app.use(express.urlencoded({ extended: true }));
 
 // Mount image routes
-app.use("/images", imageRoutes, express.static("public/img"));
+app.use("/api/v1/banner", bannerRoutes, express.static("public/img"));
 
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
