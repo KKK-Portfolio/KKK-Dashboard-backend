@@ -19,16 +19,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post(
-  "/api/v1/create",
+  "/create",
   upload.single("profile"),
   testimonialHandler.createTestimonial
 );
-router.get("/api/v1/testimonial", testimonialHandler.getTestimonials);
-router.get("/api/v1/:id", testimonialHandler.getTestimonialById);
+router.get("/", testimonialHandler.getTestimonials);
+router.get("/:id", testimonialHandler.getTestimonialById);
 router.put(
-  "/api/v1/:id",
+  "/:id",
   upload.single("profile"),
   testimonialHandler.updateTestimonialContent
 );
-router.delete("/api/v1/:id", testimonialHandler.deleteTestimonialById);
+router.delete("/:id", testimonialHandler.deleteTestimonialById);
 module.exports = router;

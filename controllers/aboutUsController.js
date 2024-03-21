@@ -29,7 +29,7 @@ exports.getAboutUs = async (req, res) => {
   try {
     const aboutUs = await AboutUs.find();
 
-    // Respond with fetched testimonials
+    // Respond with fetched
     return res.status(200).json({ status: 200, aboutUs });
   } catch (error) {
     console.error("Error fetching About Us:", error);
@@ -42,14 +42,14 @@ exports.updateAboutUs = async (req, res) => {
     const { history, mission, vision } = req.body;
 
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({ error: "Invalid testimonial ID" });
+      return res.status(400).json({ error: "Invalid ID" });
     }
     let aboutUs = await AboutUs.findById(id);
 
     if (!aboutUs) {
       return res
         .status(404)
-        .json({ status: 404, message: "Testimonial not found" });
+        .json({ status: 404, message: "Document not found" });
     }
 
     if (history || mission || vision) {
@@ -62,11 +62,11 @@ exports.updateAboutUs = async (req, res) => {
 
     return res.status(200).json({
       status: 200,
-      message: "Testimonial content updated successfully",
+      message: "Updated successfully",
       aboutUs,
     });
   } catch (error) {
-    console.error("Error updating testimonial content:", error);
+    console.error("Error updating content:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
