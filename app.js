@@ -25,6 +25,11 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/contents", express.static("public/contents"), contentRoutes);
+app.use(
+  "/",
+  express.static("public/testimonial"),
+  require("./routes/testimonialRoutes")
+);
 
 app.use("/logo", express.static("public/logo"), require("./routes/logoRoutes"));
 app.use("/", require("./routes/aboutUsRoutes"));
@@ -32,7 +37,6 @@ app.use("/api/v1/contact-us", require("./routes/contactUsRoutes"));
 
 app.use("/achievements", require("./routes/achievementRoutes"));
 
-app.use("/", require("./routes/testimonialRoutes"));
 app.listen(PORT, () => {
   console.log(`Server is starting at : ${PORT}...`);
 });
